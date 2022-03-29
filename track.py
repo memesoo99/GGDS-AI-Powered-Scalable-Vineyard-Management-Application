@@ -176,7 +176,7 @@ def detect(opt):
                             bbox_bottom = output[3]
                             # Write MOT compliant results to file
                             #######################
-                            save_path = f'{str(Path(out))}/crops/{id}.png'
+                            save_path = f'{str(Path(out))}/crops/{frame_idx}_{id}.png'
                             crop_img = img_pil.crop((bbox_left,bbox_top,bbox_right,bbox_bottom)) 
 #                             b = io.BytesIO() 
                             crop_img.save(save_path, format="PNG")
