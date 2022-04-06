@@ -12,7 +12,6 @@ import pickle
 import matplotlib.pyplot as plot
 from feature_extraction import Contours
 from sklearn.model_selection import GridSearchCV
-###test할때 만들기
 
 def inference(regressor_path='regressor_model.pkl', csv_path='/workspace/hue_test.csv', image_path='/workspace/regression_data/images3', mask_path = '/workspace/regression_data/masks'):
     """
@@ -23,20 +22,25 @@ def inference(regressor_path='regressor_model.pkl', csv_path='/workspace/hue_tes
     """
     with open(regressor_path,"rb") as f:
         regressor = pickle.load(f)
-    for i in os.listdir(image_path):
-        mask_name = i.split('.')[0]+'_masks.pkl'
-        features = Contours(f"{mask_path}/{mask_name}", f"{image_path}/{i}",csv_path)
-        features.run()
+    # for i in os.listdir(image_path):
+    #     mask_name = i.split('.')[0]+'_masks.pkl'
+    #     print(f"{image_path}/{i}")
+    #     features = Contours(f"{mask_path}/{mask_name}", f"{image_path}/{i}",csv_path)
+    #     features.run()
 
     df = pd.read_csv(csv_path)
     X = df.drop(["image"], axis=1).values
 
     pred = regressor.predict(X)
-    df = pd.concat([df,pred],axis=1)
+    pred = pred.astype(int)
+    pred_df = pd.DataFrame(pred)
+    n = len(df.columns)
+    df.insert(n,'predict',pred_df)
     print(df.head())
-    result_df = pd.DataFrame({'Real Values':df["images"].reshape(-1), 'Predicted Values':pred.reshape(-1)})
+    print(type(pred))
+    result_df = pd.DataFrame({'Image':df["image"].to_numpy().reshape(-1), 'Predicted Values':pred.reshape(-1)})
     print(result_df)
-    pd.to_csv(csv_path, df)
+    df.to_csv(csv_path)
 
 def check_accuracy():
     pass
