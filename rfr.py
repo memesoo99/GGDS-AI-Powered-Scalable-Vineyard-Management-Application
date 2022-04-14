@@ -23,7 +23,13 @@ def inference(regressor_path, csv_path, image_path, mask_path):
     with open(regressor_path,"rb") as f:
         regressor = pickle.load(f)
 
-    for i in os.listdir(image_path):
+    if os.path.isdir(image_path):
+        image_path = [os.path.join(image_path, fname) for fname in os.listdir(image_path)]
+    elif len(image_path) == 1:
+        image_path = glob.glob(os.path.expanduser(image_path))
+        assert args.input, "The input path(s) was not found"
+    
+    for i in image_path:
         mask_name = i.split('.')[0]+'_masks.pkl'
         print(f"{image_path}/{i}")
         features = Contours(f"{mask_path}/{mask_name}", f"{image_path}/{i}",csv_path)
@@ -38,8 +44,7 @@ def inference(regressor_path, csv_path, image_path, mask_path):
     n = len(df.columns)
     df.insert(n,'predict',pred_df)
     result_df = pd.DataFrame({'Image':df["image"].to_numpy().reshape(-1), 'Predicted Values':pred.reshape(-1)})
-    # print(result_df)
-    df.to_csv(csv_path)
+    df.to_csv(csv_path,index=False)
 
 #train
 def train(regressor_path = "regressor_model.pkl",csv_path = '/workspace/features3.csv'):
