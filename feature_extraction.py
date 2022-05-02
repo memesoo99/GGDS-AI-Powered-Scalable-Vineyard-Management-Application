@@ -7,25 +7,21 @@ import pandas as pd
 import numpy as np
 
 # 모든 변수들을 구하는!!!
-# contour에서 이미지 외곽ㅗ 잡는ㅕㅇ우 있으니 다 넘겨주면 ㅇ나됨
+# contour에서 이미지 외곽 잡는ㅕㅇ우 있으니 다 넘겨주면 ㅇ나됨
 # run on mask -> pkl로 저장, csv로 저장 둘다 넘겨주기
 
 class Contours():
     def __init__(self,pkl_path, image_path,df_path=None):
-        
         if not os.path.exists(df_path):
             self.df = pd.DataFrame(columns = ["image","number of instances","sunburn_ratio","diameter","circularity","density","aspect ratio","grade"])
         else:
             self.df = pd.read_csv(df_path)
         
-        # print(self.df)
         
         with open(pkl_path,"rb") as f:
-        # with open("/workspace/regression_data/masks/20170227_130321_HDR_masks.pkl","rb") as f:
             self.mask_n_class = pickle.load(f)
         self.df_path = df_path
         self.masks = self.mask_n_class[0]
-        # mask_util.decode(rle)[:, :]
         self.image_path = image_path
         self.image_shape = self.masks[0].shape
         self.image_size = self.image_shape[0] * self.image_shape[1]
@@ -203,6 +199,7 @@ class Contours():
     def oval(self,cnt):
         elipse = cv2.fitEllopse(cnt)
         # [vx,vy,x,y] = cv2
+
 
 
 

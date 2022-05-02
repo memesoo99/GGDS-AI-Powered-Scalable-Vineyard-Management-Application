@@ -1,5 +1,6 @@
 from sklearn.datasets import load_wine
 import math
+from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 from sklearn import ensemble
 from sklearn.metrics import mean_squared_error, accuracy_score
@@ -12,6 +13,8 @@ import pickle
 import matplotlib.pyplot as plot
 from feature_extraction import Contours
 from sklearn.model_selection import GridSearchCV
+
+# python rfr.py --inference --regressor-path /workspace/grape_rfr/regressor_model.pkl --csv-path /workspace/grape_rfr/sample_result.csv, --image-path /workspace/regression_data/images1 --mask-path /workspace/regression_data/masks
 
 def inference(regressor_path, csv_path, image_path, mask_path):
     """
@@ -29,10 +32,9 @@ def inference(regressor_path, csv_path, image_path, mask_path):
         image_path = glob.glob(os.path.expanduser(image_path))
         assert args.input, "The input path(s) was not found"
     
-    for i in image_path:
-        mask_name = i.split('.')[0]+'_masks.pkl'
-        print(f"{image_path}/{i}")
-        features = Contours(f"{mask_path}/{mask_name}", f"{image_path}/{i}",csv_path)
+    for i in tqdm(image_path):
+        mask_name = i.split('/')[-1].split('.')[0]+'_masks.pkl'
+        features = Contours(f"{mask_path}/{mask_name}", i, csv_path)
         features.run()
 
     df = pd.read_csv(csv_path)
@@ -43,7 +45,14 @@ def inference(regressor_path, csv_path, image_path, mask_path):
     pred_df = pd.DataFrame(pred)
     n = len(df.columns)
     df.insert(n,'predict',pred_df)
+    # 거봉이나 샤인머스캣처럼 알 크기가 큰 포도는 포도알 개수는 37~50개 정도
     result_df = pd.DataFrame({'Image':df["image"].to_numpy().reshape(-1), 'Predicted Values':pred.reshape(-1)})
+    conditionlist = [
+        (df.box_size<51),
+        (df.box_size>=51)]
+    choicelist = [False,True]
+    df['Thinning'] = np.select(conditionlist, choicelist, default='Not Specified')
+
     df.to_csv(csv_path,index=False)
 
 #train
