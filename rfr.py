@@ -14,7 +14,7 @@ import matplotlib.pyplot as plot
 from feature_extraction import Contours
 from sklearn.model_selection import GridSearchCV
 
-# python rfr.py --inference --regressor-path /workspace/grape_rfr/regressor_model.pkl --csv-path /workspace/grape_rfr/sample_result.csv, --image-path /workspace/regression_data/images1 --mask-path /workspace/regression_data/masks
+# python rfr.py --inference --regressor-path /workspace/grape_rfr/regressor_model.pkl --csv-path /workspace/grape_rfr/sample_result.csv --image-path /workspace/regression_data/images1 --mask-path /workspace/regression_data/masks
 
 def inference(regressor_path, csv_path, image_path, mask_path):
     """
@@ -48,8 +48,8 @@ def inference(regressor_path, csv_path, image_path, mask_path):
     # 거봉이나 샤인머스캣처럼 알 크기가 큰 포도는 포도알 개수는 37~50개 정도
     result_df = pd.DataFrame({'Image':df["image"].to_numpy().reshape(-1), 'Predicted Values':pred.reshape(-1)})
     conditionlist = [
-        (df.box_size<51),
-        (df.box_size>=51)]
+        (df.predict<51),
+        (df.predict>=51)]
     choicelist = [False,True]
     df['Thinning'] = np.select(conditionlist, choicelist, default='Not Specified')
 
@@ -141,4 +141,3 @@ if __name__ == "__main__":
         inference(regressor_path = args.regressor_path, csv_path=args.csv_path, image_path= args.image_path, mask_path=args.mask_path)
     if train:
         train()
-    # train()
