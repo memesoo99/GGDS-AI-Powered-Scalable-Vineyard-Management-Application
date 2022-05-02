@@ -39,7 +39,6 @@ def inference(regressor_path, csv_path, image_path, mask_path):
 
     df = pd.read_csv(csv_path)
     X = df.drop(["image"], axis=1).values
-
     pred = regressor.predict(X)
     pred = pred.astype(int)
     pred_df = pd.DataFrame(pred)
@@ -52,12 +51,11 @@ def inference(regressor_path, csv_path, image_path, mask_path):
         (df.predict>=51)]
     choicelist = [False,True]
     df['Thinning'] = np.select(conditionlist, choicelist, default='Not Specified')
-
+    # 물리적 상처가 있거나 크기가 작은 알, 병해충 피해를 본 알, 안쪽과 위쪽에 자라는 알 위주로 솎아주면 된다.
     df.to_csv(csv_path,index=False)
 
 #train
 def train(regressor_path = "regressor_model.pkl",csv_path = '/workspace/features3.csv'):
-
     # for i in os.listdir('/workspace/regression_data/images3'):
     #     print(i)
     #     # image_name = i.replace('.pkl','.jpg')
@@ -137,7 +135,7 @@ if __name__ == "__main__":
                         help='inference할 cropped된 포도 이미지 folder')
     
     args = parser.parse_args()
-    if inference:
+    if args.inference:
         inference(regressor_path = args.regressor_path, csv_path=args.csv_path, image_path= args.image_path, mask_path=args.mask_path)
-    if train:
+    if args.train:
         train()
