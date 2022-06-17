@@ -42,13 +42,13 @@ python rfr.py \
   --mask-path : ../regression_data/masks
 ```
 
-inference : inference mode
-train : train mode
-regressor_path : pretrained regressor path
-csv-path : result csv path
-image-path : image path (directory O, list of paths O, single path as string O) (***Same path as the previos step's input***)
-mask-path : Inferenced Mask.pkl path (***Same path as the previos step's mask-path***)
-
+- inference : inference mode
+- train : train mode
+- regressor_path : pretrained regressor path
+- csv-path : result csv path
+- image-path : image path (directory O, list of paths O, single path as string O) (***Same path as the previous step's input***)  
+- mask-path : Inferenced Mask.pkl path (***Same path as the previous step's mask-path***)  
+    
 
 ### Result CSV
 - /grape-thinning/grape_feature_regression/sample_result.csv  
