@@ -1,0 +1,6 @@
+[DEFAULT]
+OUTPUT_FOLDER = ./viz/result.csv
+OUTPUT = true
+mask = true
+image_path = true
+pretrain_config = training_dir/config.yaml
