@@ -1,8 +1,14 @@
 # Grape-thinning
-3-step grape prunning algorithm
+### 3-step Grape Prunning/Thinning Algorithm
 
 ## Process
 ![grape](https://user-images.githubusercontent.com/68745418/174239241-3e8850a0-2b0c-4797-a783-07576b09be3b.jpg)  
+
+
+### [Domestic Publication]  
+```
+Grape Grade Discrimination System using Step-by-step Deep Learning Model and Drone Path Planning Algorithm(2022), Korean Institue Information Scientists And Engineers
+```
 
 
 ## 1. grape_detection (Yolo & DeepSORT)
@@ -59,4 +65,4 @@ image,number of instances,sunburn_ratio,diameter,circularity,density,aspect rati
 ## Pretrained
 - grape detection : /grape-thinning/grape_detection/run22_best_yolov5.pt
 - boxinst : /grape-thinning/grape_boxinst/training_dir/grape_pretrained.pth
-- random forest regressor : /grape-thinning/grape_feature_regression/regressor_model.pkl
+- random forest regressor : /grape-thinning/grape_feature_regression/regressor_model.pkl\
