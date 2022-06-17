@@ -1,4 +1,4 @@
-# grape-thinning
+# Grape-thinning
 3-step grape prunning algorithm
 
 ## Process
