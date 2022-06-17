@@ -1,3 +1,6 @@
 [submodule "grape_boxinst"]
 	path = grape_boxinst
 	url = https://github.com/memesoo99/grape_boxinst.git
+[submodule "grape_detection/yolov5"]
+	path = grape_detection/yolov5
+	url = https://github.com/ultralytics/yolov5.git
