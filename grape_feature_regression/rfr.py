@@ -14,7 +14,6 @@ import matplotlib.pyplot as plot
 from feature_extraction import Contours
 from sklearn.model_selection import GridSearchCV
 
-# python rfr.py --inference --regressor-path /workspace/grape_rfr/regressor_model.pkl --csv-path /workspace/grape_rfr/sample_result.csv --image-path /workspace/regression_data/images1 --mask-path /workspace/regression_data/masks
 
 def inference(regressor_path, csv_path, image_path, mask_path):
     """
@@ -55,24 +54,11 @@ def inference(regressor_path, csv_path, image_path, mask_path):
     df.to_csv(csv_path,index=False)
 
 #train
-def train(regressor_path = "regressor_model.pkl",csv_path = '/workspace/features3.csv'):
-    # for i in os.listdir('/workspace/regression_data/images3'):
-    #     print(i)
-    #     # image_name = i.replace('.pkl','.jpg')
-    #     pkl_name = i.split('.')[0]
-    #     pkl_name = pkl_name + '_masks.pkl'
-    #     # image_name = image_name.replace("_masks","")
-    #     features = Contours(f"/workspace/regression_data/masks/{pkl_name}", f"/workspace/regression_data/images3/{i}",csv_path)
-    #     features.run()
+def train(regressor_path = "regressor_model.pkl",csv_path = '/workspace/features3.csv',gt_csv_path = "/workspace/Counts.csv"):
 
-    pre_df1 = pd.read_csv("/workspace/features1.csv")
-    pre_df2 = pd.read_csv("/workspace/features2.csv") # features csv
-    pre_df3 = pd.read_csv("/workspace/features3.csv")
-    pre_df = pd.concat([pre_df1,pre_df2,pre_df3],axis=0)
-    # pre_df = pd.read_csv(csv_path)
-    # gt랑 합치기. gt_df가 최종
+    pre_df = pd.read_csv(csv_path)
  
-    gt = pd.read_csv("/workspace/Counts.csv", index_col = False) # GT csv
+    gt = pd.read_csv(gt_csv_path, index_col = False) # GT csv
     gt = gt.to_dict('split')['data']
     gt_df = pd.DataFrame(columns=["image","number of instances","sunburn_ratio","diameter","circularity","density","aspect ratio","grade","average_hue","gt"])
     gt_dict = {}
@@ -110,7 +96,6 @@ def train(regressor_path = "regressor_model.pkl",csv_path = '/workspace/features
     from sklearn.metrics import mean_squared_error
     some_predicted = regressor.predict(X_test)
     mse = np.sqrt(mean_squared_error(some_predicted, y_test))
-    print('평균제곱근오차', mse)
 
     with open(regressor_path,"wb") as f:
         pickle.dump(regressor, f)
@@ -125,14 +110,14 @@ if __name__ == "__main__":
                         help='an integer for the accumulator')
     parser.add_argument('--inference',action='store_true', default=False,
                         help='sum the integers (default: find the max)')
-    parser.add_argument('--regressor-path', type=str, default='regressor_model.pkl',
+    parser.add_argument('--regressor-path', type=str,
                         help='Trained regressor model path')
-    parser.add_argument('--csv-path', type=str, default='/workspace/hue_test.csv',
+    parser.add_argument('--csv-path', type=str,
                         help='csv file path where you want to save results')
-    parser.add_argument('--image-path', type=str, default='/workspace/regression_data/images3',
-                        help='inference할 cropped된 포도 이미지 folder')
-    parser.add_argument('--mask-path', type=str, default='/workspace/regression_data/masks',
-                        help='inference할 cropped된 포도 이미지 folder')
+    parser.add_argument('--image-path', type=str,
+                        help='grape input data path')
+    parser.add_argument('--mask-path', type=str,
+                        help='grape mask input data path')
     
     args = parser.parse_args()
     if args.inference:
