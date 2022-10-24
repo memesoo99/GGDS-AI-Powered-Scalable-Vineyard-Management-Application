@@ -6,9 +6,9 @@
 
 
 ### [Domestic Publication]  
-```
-Grape Grade Discrimination System using Step-by-step Deep Learning Model and Drone Path Planning Algorithm(2022), Korean Institue Information Scientists And Engineers
-```
+
+"Grape Grade Discrimination System using Step-by-step Deep Learning Model and Drone Path Planning Algorithm", 2022. Korean Institue Information Scientists And Engineers(KIISE)
+
 
 
 ## 1. grape_detection (Yolo & DeepSORT)
