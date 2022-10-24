@@ -1,5 +1,6 @@
 # GGDS: Grape Grade Discrimination System
 ### 3-step DL model to discriminate grape grade and facilitate grape thinning process
+Drone autonomous driving can be seen [here](https://github.com/lazybuttrying/afarm_drone.git)
 
 ## Process
 ![grape](https://user-images.githubusercontent.com/68745418/174239241-3e8850a0-2b0c-4797-a783-07576b09be3b.jpg)  
